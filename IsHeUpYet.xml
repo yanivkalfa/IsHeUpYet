@@ -1,0 +1,193 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+	..\FrameXML\UI.xsd">
+
+  <Frame name="IHUYMainFrame" enableMouse="true" movable="true" parent="UIParent" hidden="true">
+    <Size x="110" y="250"/>
+    <Anchors>
+      <Anchor point="BOTTOMRIGHT" x="-200" y="150"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+              edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <BackgroundInsets left="4" right="4" top="4" bottom="4"/>
+      <TileSize val="16"/>
+      <EdgeSize val="16"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString inherits="GameFontHighlight" text="Options">
+          <Size>
+            <AbsDimension x="200" y="15"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-10"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="IsHeUpYetSoundAlarm" toplevel="true">
+        <Size x="18" y="18"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" x="10" y="-9"/>
+        </Anchors>
+        <NormalTexture file="Interface\Buttons\UI-GuildButton-MOTD-Disabled.PNG"/>
+        <PushedTexture file="Interface\Buttons\UI-GuildButton-MOTD-Up.PNG"/>
+        <Scripts>
+          <OnClick>
+            IsHeUpYet:updateSoundAlarm();
+          </OnClick>
+          <OnShow>
+            IsHeUpYet:updateSoundAlarmIcon();
+          </OnShow>
+        </Scripts>
+      </Button>
+      <Button name="CloseIsHeUpYetOptions" toplevel="true">
+        <Size x="30" y="30"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-2" y="-2"/>
+        </Anchors>
+        <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up.PNG"/>
+        <PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down.PNG"/>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight.PNG" alphaMode="ADD"/>
+        <Scripts>
+          <OnClick>
+              IsHeUpYet:toggleOptions();
+          </OnClick>
+        </Scripts>
+      </Button>
+      <EditBox name="IsHeUpYetMobOneTextBox" toplevel="true" autoFocus="false">
+        <Size x="80" y="30"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-15" y="-45"/>
+        </Anchors>
+        <TextInsets left="10" right="10" top="5" bottom="5"/>
+        <Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+          <TileSize val="16"/>
+          <EdgeSize val="16"/>
+        </Backdrop>
+        <FontString inherits="ChatFontNormal"/>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString name="title" inherits="GameFontNormal" justifyH="LEFT" text="Mob Name: ">
+              <Anchors>
+                <Anchor relativeTo="IsHeUpYetMobOneTextBox" point="TOPRIGHT" x="0" Y="15"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnTextChanged>
+            IsHeUpYetSaved.lookFor.mobOne = self:GetText();
+          </OnTextChanged>
+          <OnEscapePressed>
+            self:ClearFocus();
+          </OnEscapePressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="IsHeUpYetMobTwoTextBox" toplevel="true" autoFocus="false" letters="200">
+        <Size x="80" y="30"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeTo="IsHeUpYetMobOneTextBox" y="-35"/>
+        </Anchors>
+        <TextInsets left="10" right="10" top="5" bottom="5"/>
+        <Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+          <TileSize val="16"/>
+          <EdgeSize val="16"/>
+        </Backdrop>
+        <FontString inherits="ChatFontNormal"/>
+        <Scripts>
+          <OnTextChanged>
+            IsHeUpYetSaved.lookFor.mobTwo = self:GetText();
+          </OnTextChanged>
+          <OnEscapePressed>
+            self:ClearFocus();
+          </OnEscapePressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="IsHeUpYetMobTreeTextBox" toplevel="true" autoFocus="false" letters="200">
+        <Size x="80" y="30"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeTo="IsHeUpYetMobTwoTextBox" y="-35"/>
+        </Anchors>
+        <TextInsets left="10" right="10" top="5" bottom="5"/>
+        <Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+          <TileSize val="16"/>
+          <EdgeSize val="16"/>
+        </Backdrop>
+        <FontString inherits="ChatFontNormal"/>
+        <Scripts>
+          <OnTextChanged>
+            IsHeUpYetSaved.lookFor.mobTree = self:GetText();
+          </OnTextChanged>
+          <OnEscapePressed>
+            self:ClearFocus();
+          </OnEscapePressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="IsHeUpYetIntervalTextBox" toplevel="true" autoFocus="false" letters="200">
+        <Size x="80" y="30"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeTo="IsHeUpYetMobTreeTextBox" y="-65"/>
+        </Anchors>
+        <TextInsets left="10" right="10" top="5" bottom="5"/>
+        <Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+          <TileSize val="16"/>
+          <EdgeSize val="16"/>
+        </Backdrop>
+        <FontString inherits="ChatFontNormal"/>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString name="title" inherits="GameFontNormal" justifyH="LEFT" text="Interval(secs): ">
+              <Anchors>
+                <Anchor point="TOPLEFT" x="0" Y="15"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnTextChanged>
+            local interval = tonumber(self:GetText());
+            if ( type(interval) == "number" ) then
+              IsHeUpYetSaved.interval = interval;
+              IsHeUpYet:updateInterval()
+            end
+          </OnTextChanged>
+          <OnEscapePressed>
+            self:ClearFocus();
+          </OnEscapePressed>
+        </Scripts>
+      </EditBox>
+    </Frames>
+    <Scripts>
+      <Scripts>
+        <OnLoad>
+            self:RegisterForDrag("LeftButton", "RightButton");
+        </OnLoad>
+        <OnDragStart>
+            self:StartMoving();
+        </OnDragStart>
+        <OnDragStop>
+            self:StopMovingOrSizing();
+        </OnDragStop>
+      </Scripts>
+      <OnShow>
+        if ( IsHeUpYetSaved.lookFor.mobOne ~= nil ) then
+          IsHeUpYetMobOneTextBox:SetText(IsHeUpYetSaved.lookFor.mobOne);
+        end
+        if ( IsHeUpYetSaved.lookFor.mobOne ~= nil ) then
+          IsHeUpYetMobTwoTextBox:SetText(IsHeUpYetSaved.lookFor.mobTwo);
+        end
+        if ( IsHeUpYetSaved.lookFor.mobOne ~= nil ) then
+          IsHeUpYetMobTreeTextBox:SetText(IsHeUpYetSaved.lookFor.mobTree);
+        end
+        if ( type(IsHeUpYetSaved.interval) == "number" ) then
+          IsHeUpYetIntervalTextBox:SetText(IsHeUpYetSaved.interval);
+        end
+      </OnShow>
+    </Scripts>
+  </Frame>
+</Ui>
