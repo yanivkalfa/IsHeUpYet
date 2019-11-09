@@ -1,5 +1,5 @@
 # Is He Up Yet (IHUY)
-####Addon that uses EWT to let you know when a certain mob spawned with a alarm.
+#### Addon that uses EWT to let you know when a certain mob spawned with a alarm.
 
 #### to post alarm to discord.
 * Create a get proxy that make a post to discord hook.
