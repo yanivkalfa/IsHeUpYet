@@ -14,4 +14,8 @@ Libs\Timer\Timer.lua
 ## Libs
 
 IsHeUpYet.lua
+
+## config
+Config\const.lua
+
 IsHeUpYet.xml

@@ -5,6 +5,12 @@ IsHeUpYet.initiated = nil;
 IsHeUpYet.interval = nil;
 IsHeUpYet.isAfk = false;
 
+IsHeUpYet.DiscordUpdateTimeout = 5;
+IsHeUpYet.DiscordLastUpdated = {
+  mobOne = 0,
+  mobTwo = 0,
+  mobTree = 0,
+};
 IsHeUpYetSaved = IsHeUpYetSaved or {
   lookFor = {
     mobOne = nil,
@@ -17,6 +23,33 @@ IsHeUpYetSaved = IsHeUpYetSaved or {
     hide = false,
   },
 };
+
+local char_to_hex = function(c)
+  return string.format("%%%02X", string.byte(c))
+end
+
+local function urlencode(url)
+  if url == nil then
+    return
+  end
+  url = url:gsub("\n", "\r\n")
+  url = url:gsub("([^%w ])", char_to_hex)
+  url = url:gsub(" ", "+")
+  return url
+end
+
+local hex_to_char = function(x)
+  return string.char(tonumber(x, 16))
+end
+
+local urldecode = function(url)
+  if url == nil then
+    return
+  end
+  url = url:gsub("+", " ")
+  url = url:gsub("%%(%x%x)", hex_to_char)
+  return url
+end
 
 function IsHeUpYet:toggleOptions()
   if ( IHUYMainFrame:IsShown() ) then
@@ -60,7 +93,7 @@ function IsHeUpYet:playAlarm()
   end
 end
 
-function IsHeUpYet:checkForMob(mobName)
+function IsHeUpYet:checkForMob(mobName, mobFieldName)
   local total = GetObjectCount(true);
   for i = 1,total do
     local objectId = GetObjectWithIndex(i);
@@ -69,6 +102,13 @@ function IsHeUpYet:checkForMob(mobName)
       if ( type(objectName) == "string" and strlower(objectName) == strlower(mobName) ) then
         IsHeUpYet:playAlarm();
         RunMacroText("/target "..objectName);
+        local mobLastUpdated = IsHeUpYet.DiscordLastUpdated[mobFieldName];
+        local currentTime = time();
+        if ( currentTime >= (mobLastUpdated + IsHeUpYet.DiscordUpdateTimeout)) then
+          local url = IsHeUpYet.Constants.DISCORD_URL..'?content='..urlencode(objectName..' has spawned head over there !!!');
+          SendHTTPRequest (url, nil, function(a,b,c,d,e) end);
+          IsHeUpYet.DiscordLastUpdated[mobFieldName] = currentTime;
+        end
         break;
       end
     end
@@ -78,15 +118,15 @@ end
 function IsHeUpYet:checkMobs()
   if ( IsHeUpYetSaved.soundAlarm ) then
     if ( IsHeUpYetSaved.lookFor.mobOne and string.len(IsHeUpYetSaved.lookFor.mobOne) > 0 ) then
-      IsHeUpYet:checkForMob(IsHeUpYetSaved.lookFor.mobOne);
+      IsHeUpYet:checkForMob(IsHeUpYetSaved.lookFor.mobOne, "mobOne");
     end
 
     if ( IsHeUpYetSaved.lookFor.mobTwo and string.len(IsHeUpYetSaved.lookFor.mobTwo) > 0 ) then
-      IsHeUpYet:checkForMob(IsHeUpYetSaved.lookFor.mobTwo);
+      IsHeUpYet:checkForMob(IsHeUpYetSaved.lookFor.mobTwo, "mobTwo");
     end
 
     if ( IsHeUpYetSaved.lookFor.mobTree and string.len(IsHeUpYetSaved.lookFor.mobTree) > 0 ) then
-      IsHeUpYet:checkForMob(IsHeUpYetSaved.lookFor.mobTree);
+      IsHeUpYet:checkForMob(IsHeUpYetSaved.lookFor.mobTree, "mobTree");
     end
   end
 end
