@@ -99,9 +99,10 @@ function IsHeUpYet:checkForMob(mobName, mobFieldName)
     local objectId = GetObjectWithIndex(i);
     if ( ObjectExists(objectId) ) then
       local objectName = ObjectName(objectId);
-      if ( type(objectName) == "string" and strlower(objectName) == strlower(mobName) ) then
+      local i = string.find(strlower(objectName), strlower(mobName));
+      if ( type(objectName) == "string" and type(i) == 'number' ) then
         IsHeUpYet:playAlarm();
-        RunMacroText("/target "..objectName);
+        --RunMacroText("/target "..objectName);
         local mobLastUpdated = IsHeUpYet.DiscordLastUpdated[mobFieldName];
         local currentTime = time();
         if ( currentTime >= (mobLastUpdated + IsHeUpYet.DiscordUpdateTimeout)) then
